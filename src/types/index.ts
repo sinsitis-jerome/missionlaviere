@@ -1,0 +1,121 @@
+/**
+ * Types partagés de l'application. Le vocabulaire (statuts, priorités) est
+ * gardé en français car il est utilisé tel quel dans l'historique
+ * d'activité généré automatiquement.
+ */
+
+export type Priority = 'basse' | 'normale' | 'haute' | 'urgente';
+
+export type Status = 'a_faire' | 'en_cours' | 'termine';
+
+export type RecurrenceFrequency = 'quotidienne' | 'hebdomadaire' | 'mensuelle';
+
+export interface Recurrence {
+  frequence: RecurrenceFrequency;
+  /** Intervalle en unités de la fréquence (ex: tous les 2 jours). */
+  intervalle: number;
+  /** Pour la fréquence hebdomadaire : 0 (dimanche) à 6 (samedi). */
+  joursSemaine?: number[];
+}
+
+export interface HouseholdMember {
+  uid: string;
+  displayName: string;
+  photoURL: string | null;
+  /** Couleur d'identification du membre, utilisée sur les avatars et pastilles. */
+  colorTag: string;
+  joinedAt: number;
+}
+
+export interface Household {
+  id: string;
+  name: string;
+  ownerId: string;
+  inviteCode: string;
+  memberIds: string[];
+  members: Record<string, HouseholdMember>;
+  categories: string[];
+  createdAt: number;
+}
+
+export interface Task {
+  id: string;
+  householdId: string;
+  title: string;
+  description: string;
+  category: string;
+  priority: Priority;
+  status: Status;
+  assigneeId: string | null;
+  createdBy: string;
+  createdAt: number;
+  updatedAt: number;
+  dueDate: number | null;
+  recurrence: Recurrence | null;
+  completedAt: number | null;
+  completedBy: string | null;
+}
+
+export type NewTaskInput = Pick<
+  Task,
+  'title' | 'description' | 'category' | 'priority' | 'assigneeId' | 'dueDate' | 'recurrence'
+>;
+
+export type ActivityType =
+  | 'creation'
+  | 'commentaire'
+  | 'statut'
+  | 'affectation'
+  | 'priorite'
+  | 'echeance'
+  | 'recurrence';
+
+export interface ActivityEntry {
+  id: string;
+  taskId: string;
+  type: ActivityType;
+  authorId: string;
+  authorName: string;
+  createdAt: number;
+  /** Texte libre pour un commentaire, message généré pour les autres types. */
+  text: string;
+}
+
+export const PRIORITY_ORDER: Priority[] = ['urgente', 'haute', 'normale', 'basse'];
+
+export const PRIORITY_LABELS: Record<Priority, string> = {
+  urgente: 'Urgente',
+  haute: 'Haute',
+  normale: 'Normale',
+  basse: 'Basse',
+};
+
+export const STATUS_LABELS: Record<Status, string> = {
+  a_faire: 'À faire',
+  en_cours: 'En cours',
+  termine: 'Terminée',
+};
+
+export const STATUS_ORDER: Status[] = ['a_faire', 'en_cours', 'termine'];
+
+export const DEFAULT_CATEGORIES = [
+  'Ménage',
+  'Courses',
+  'Cuisine',
+  'Administratif',
+  'Bricolage',
+  'Extérieur',
+  'Enfants',
+  'Animaux',
+];
+
+export const MEMBER_COLORS = [
+  '#C1483A', // brique
+  '#4FA88F', // sarcelle
+  '#E4B94E', // ocre
+  '#6B7FD7', // pervenche
+  '#A2609B', // prune
+  '#5E8B4F', // sauge
+  '#D97B4F', // argile
+  '#4A7FA5', // bleu ardoise
+];

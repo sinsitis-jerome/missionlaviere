@@ -1,0 +1,967 @@
+/* ==========================================================================
+   Système visuel : un tableau de cuisine — ardoise sombre pour l'en-tête et
+   les moments d'accueil, papier clair pour le contenu de travail, pastilles
+   de couleur pour les priorités et les membres. Pas de cartes SaaS
+   génériques : bordures fines, aplats de couleur en bandeau, peu d'ombre.
+   ========================================================================== */
+
+/* ---------- Boutons & liens ---------- */
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.08s ease, background-color 0.15s ease;
+}
+
+.bouton:active {
+  transform: translateY(1px);
+}
+
+.bouton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.bouton--plein {
+  background: var(--sarcelle);
+  color: var(--craie);
+}
+
+.bouton--plein:hover:not(:disabled) {
+  background: #367a66;
+}
+
+.bouton--contour {
+  background: transparent;
+  border: 1.5px solid var(--ligne);
+  color: var(--encre);
+}
+
+.bouton--contour:hover:not(:disabled) {
+  border-color: var(--sarcelle);
+  color: var(--sarcelle);
+}
+
+.bouton--texte {
+  background: transparent;
+  color: var(--encre-douce);
+  padding: 0.65rem 0.5rem;
+}
+
+.bouton--craie {
+  background: var(--craie);
+  color: var(--ardoise);
+}
+
+.lien {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--sarcelle);
+  text-decoration: none;
+}
+
+.lien:hover {
+  text-decoration: underline;
+}
+
+.lien--craie {
+  color: var(--craie);
+  opacity: 0.85;
+}
+
+.lien--craie:hover {
+  opacity: 1;
+}
+
+.lien--danger {
+  color: var(--brique);
+}
+
+.texte-attenue {
+  color: var(--encre-douce);
+}
+
+/* ---------- Écran de connexion ---------- */
+
+.connexion {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 20% 15%, var(--ardoise-clair), var(--ardoise) 60%);
+  padding: 1.5rem;
+}
+
+.connexion__carte {
+  max-width: 420px;
+  text-align: center;
+  color: var(--craie);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.connexion__pictogramme {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 0.5rem;
+}
+
+.connexion__titre {
+  font-size: 2rem;
+  font-family: var(--police-affichage);
+}
+
+.connexion__texte {
+  color: rgba(243, 241, 231, 0.78);
+  line-height: 1.6;
+}
+
+.connexion__erreur {
+  color: #f2b8a8;
+  font-size: 0.9rem;
+}
+
+/* ---------- Passerelle (choix / création / adhésion de foyer) ---------- */
+
+.passerelle {
+  min-height: 100vh;
+  background: var(--papier);
+}
+
+.passerelle__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--ardoise);
+  color: var(--craie);
+  font-size: 0.9rem;
+}
+
+.passerelle__contenu {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.passerelle__contenu h1 {
+  font-size: 1.75rem;
+}
+
+.passerelle__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.liste-foyers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.carte-foyer {
+  width: 100%;
+  text-align: left;
+  background: var(--papier-carte);
+  border: 1px solid var(--ligne);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.carte-foyer:hover {
+  border-color: var(--sarcelle);
+}
+
+.carte-foyer__nom {
+  font-family: var(--police-affichage);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.carte-foyer__membres {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ---------- Formulaires ---------- */
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formulaire label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--encre-douce);
+  margin-top: 0.6rem;
+}
+
+.formulaire input,
+.formulaire textarea,
+.formulaire select,
+.ligne-formulaire input {
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  padding: 0.6rem 0.7rem;
+  background: var(--papier-carte);
+}
+
+.formulaire input:focus,
+.formulaire textarea:focus,
+.formulaire select:focus {
+  border-color: var(--sarcelle);
+}
+
+.formulaire__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem 1rem;
+  margin-top: 0.4rem;
+}
+
+.formulaire__grille > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formulaire__grille label {
+  margin-top: 0;
+}
+
+.formulaire__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.ligne-formulaire {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.ligne-formulaire input {
+  flex: 1;
+}
+
+/* ---------- Coquille de l'application (en-tête + contenu) ---------- */
+
+.coquille {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.entete {
+  background: var(--ardoise);
+  color: var(--craie);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.85rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.entete__gauche {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.entete__nom {
+  font-size: 1.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entete__nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.entete__nav a {
+  color: rgba(243, 241, 231, 0.7);
+  text-decoration: none;
+  font-weight: 600;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.entete__nav a.actif,
+.entete__nav a:hover {
+  color: var(--craie);
+  border-bottom-color: var(--ocre);
+}
+
+.entete__droite {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.entete__membres {
+  display: flex;
+}
+
+.entete__membres .avatar {
+  margin-left: -8px;
+  border-width: 2px;
+}
+
+.entete__membres .avatar:first-child {
+  margin-left: 0;
+}
+
+.contenu {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .entete {
+    gap: 0.75rem;
+  }
+  .entete__nav {
+    order: 3;
+    width: 100%;
+  }
+}
+
+/* ---------- Avatars ---------- */
+
+.avatar {
+  display: inline-flex;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--craie);
+  font-weight: 700;
+}
+
+/* ---------- Priorité ---------- */
+
+.priorite {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.priorite__pastille {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.priorite--basse .priorite__pastille { background: var(--encre-douce); }
+.priorite--normale .priorite__pastille { background: var(--sarcelle); }
+.priorite--haute .priorite__pastille { background: var(--ocre); }
+.priorite--urgente .priorite__pastille { background: var(--brique); }
+
+.priorite--basse { color: var(--encre-douce); }
+.priorite--normale { color: var(--sarcelle); }
+.priorite--haute { color: #9c7220; }
+.priorite--urgente { color: var(--brique); }
+
+/* ---------- Tableau & colonnes ---------- */
+
+.tableau__barre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.filtres {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.filtres select,
+.filtres__recherche {
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  background: var(--papier-carte);
+  font-size: 0.85rem;
+}
+
+.filtres__recherche {
+  min-width: 180px;
+}
+
+.tableau__colonnes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .tableau__colonnes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.colonne {
+  background: var(--papier-carte);
+  border: 1px solid var(--ligne);
+  border-radius: 12px;
+  padding: 0.9rem;
+  min-height: 160px;
+}
+
+.colonne__entete {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--ligne);
+}
+
+.colonne__entete h2 {
+  font-size: 1.05rem;
+}
+
+.colonne--a_faire .colonne__entete { border-bottom-color: var(--sarcelle); }
+.colonne--en_cours .colonne__entete { border-bottom-color: var(--ocre); }
+.colonne--termine .colonne__entete { border-bottom-color: var(--encre-douce); }
+
+.colonne__compteur {
+  background: var(--papier);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--encre-douce);
+}
+
+.colonne__liste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.colonne__vide {
+  color: var(--encre-douce);
+  font-size: 0.88rem;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+/* ---------- Carte tâche ---------- */
+
+.carte-tache {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--papier);
+  border: 1px solid var(--ligne);
+  border-left: 4px solid var(--encre-douce);
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+}
+
+.carte-tache:hover {
+  border-color: var(--sarcelle);
+  border-left-color: var(--sarcelle);
+}
+
+.carte-tache--basse { border-left-color: var(--encre-douce); }
+.carte-tache--normale { border-left-color: var(--sarcelle); }
+.carte-tache--haute { border-left-color: var(--ocre); }
+.carte-tache--urgente { border-left-color: var(--brique); }
+
+.carte-tache__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.carte-tache__categorie {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--encre-douce);
+}
+
+.icone-recurrence {
+  color: var(--encre-douce);
+}
+
+.carte-tache__titre {
+  font-weight: 600;
+  margin-bottom: 0.55rem;
+  line-height: 1.35;
+}
+
+.carte-tache__pied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.echeance {
+  color: var(--encre-douce);
+}
+
+.echeance--retard {
+  color: var(--brique);
+  font-weight: 700;
+}
+
+.carte-tache__assigne {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.82rem;
+  color: var(--encre-douce);
+}
+
+/* ---------- État vide ---------- */
+
+.etat-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 3.5rem 1rem;
+  color: var(--encre-douce);
+}
+
+.etat-vide h2 {
+  color: var(--encre);
+}
+
+/* ---------- Modale ---------- */
+
+.modale__fond {
+  position: fixed;
+  inset: 0;
+  background: rgba(33, 31, 26, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+  padding: 0;
+}
+
+.modale {
+  background: var(--papier);
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 16px 16px 0 0;
+  box-shadow: var(--ombre);
+}
+
+.modale--large {
+  max-width: 720px;
+}
+
+@media (min-width: 640px) {
+  .modale__fond {
+    align-items: center;
+    padding: 1.5rem;
+  }
+  .modale {
+    border-radius: 14px;
+  }
+}
+
+.modale__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--ligne);
+  position: sticky;
+  top: 0;
+  background: var(--papier);
+}
+
+.modale__entete h2 {
+  font-size: 1.2rem;
+}
+
+.modale__fermer {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--encre-douce);
+}
+
+.modale__corps {
+  padding: 1.4rem;
+}
+
+/* ---------- Récurrence ---------- */
+
+.case {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.recurrence__details {
+  margin-top: 0.7rem;
+  padding: 0.8rem;
+  background: var(--sarcelle-clair);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.recurrence__ligne {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recurrence__ligne input {
+  width: 4rem;
+}
+
+.recurrence__jours {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.jour {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sarcelle);
+  background: var(--papier-carte);
+  color: var(--sarcelle);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.jour--actif {
+  background: var(--sarcelle);
+  color: var(--craie);
+}
+
+/* ---------- Détail de tâche ---------- */
+
+.detail-tache {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.detail-tache__titre {
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.detail-tache__titre p {
+  color: var(--encre-douce);
+}
+
+.detail-tache__edition {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-tache__edition input,
+.detail-tache__edition textarea {
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+}
+
+.detail-tache__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .detail-tache__grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+.etiquette {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--encre-douce);
+  margin-bottom: 0.3rem;
+}
+
+.detail-tache select,
+.detail-tache input[type='date'] {
+  width: 100%;
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  background: var(--papier-carte);
+}
+
+.segmente {
+  display: flex;
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.segmente__bouton {
+  flex: 1;
+  background: var(--papier-carte);
+  border: none;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-right: 1px solid var(--ligne);
+}
+
+.segmente__bouton:last-child {
+  border-right: none;
+}
+
+.segmente__bouton--actif {
+  background: var(--sarcelle);
+  color: var(--craie);
+}
+
+.separateur {
+  border: none;
+  border-top: 1px solid var(--ligne);
+}
+
+/* ---------- Activité ---------- */
+
+.activite {
+  list-style: none;
+  margin: 0.75rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.activite__entree {
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--ligne);
+}
+
+.activite__entree time {
+  color: var(--encre-douce);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.activite__texte {
+  color: var(--encre-douce);
+  font-style: italic;
+}
+
+.activite__commentaire {
+  flex: 1;
+}
+
+.activite__auteur {
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+.commentaire-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.commentaire-form input {
+  flex: 1;
+  border: 1.5px solid var(--ligne);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+}
+
+/* ---------- Réglages ---------- */
+
+.reglages {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 560px;
+}
+
+.reglages__section h2 {
+  font-size: 1.05rem;
+  margin-bottom: 0.7rem;
+}
+
+.liste-membres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.liste-membres li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.etiquette-role {
+  font-size: 0.72rem;
+  color: var(--encre-douce);
+  background: var(--papier-carte);
+  border: 1px solid var(--ligne);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+
+.code-invitation {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.code-invitation__valeur {
+  font-family: var(--police-affichage);
+  font-size: 1.5rem;
+  letter-spacing: 0.12em;
+  background: var(--ardoise);
+  color: var(--craie);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.liste-categories {
+  list-style: none;
+  margin: 0 0 0.8rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.liste-categories li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--papier-carte);
+  border: 1px solid var(--ligne);
+  border-radius: 999px;
+  padding: 0.3rem 0.4rem 0.3rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.liste-categories__retirer {
+  background: none;
+  border: none;
+  color: var(--encre-douce);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.liste-categories__retirer:hover {
+  background: var(--ligne);
+}
+
+/* ---------- États globaux ---------- */
+
+.chargement,
+.config-manquante {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  color: var(--encre-douce);
+}
+
+.config-manquante code {
+  background: var(--papier-carte);
+  border: 1px solid var(--ligne);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+}

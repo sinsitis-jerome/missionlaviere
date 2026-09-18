@@ -1,0 +1,69 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isMember(household) {
+      return isSignedIn() && request.auth.uid in household.data.memberIds;
+    }
+
+    // Autorise un utilisateur non-membre à s'ajouter lui-même (rejoindre via
+    // un code d'invitation) sans toucher au reste du document.
+    function isSelfJoining(household) {
+      let before = household.data;
+      let after = request.resource.data;
+      return isSignedIn()
+        && !(request.auth.uid in before.memberIds)
+        && request.auth.uid in after.memberIds
+        && after.memberIds.size() == before.memberIds.size() + 1
+        && after.name == before.name
+        && after.ownerId == before.ownerId
+        && after.inviteCode == before.inviteCode
+        && after.categories == before.categories;
+    }
+
+    // Résolution "code d'invitation -> id de foyer" pour un utilisateur qui
+    // n'est pas encore membre. Ne contient aucune donnée sensible : juste un
+    // code aléatoire à 6 caractères pointant vers un id de foyer.
+    match /inviteCodes/{code} {
+      allow get: if isSignedIn();
+      allow create: if isMember(get(/databases/$(database)/documents/households/$(request.resource.data.householdId)));
+      allow delete: if isSignedIn();
+    }
+
+    match /households/{householdId} {
+      allow create: if isSignedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.memberIds == [request.auth.uid];
+
+      // Un foyer ne peut être ouvert que par un membre, ou par quelqu'un qui
+      // vient de résoudre son id via un code d'invitation valide (il connaît
+      // alors l'id, mais pas encore le contenu tant qu'il n'est pas membre).
+      allow get: if isSignedIn();
+
+      // La liste (recherche "mes foyers") ne peut renvoyer que des documents
+      // dont l'utilisateur est déjà membre.
+      allow list: if isMember(resource);
+
+      allow update: if isMember(resource) || isSelfJoining(resource);
+
+      allow delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+
+      match /tasks/{taskId} {
+        allow read, create, update, delete: if isSignedIn()
+          && request.auth.uid in get(/databases/$(database)/documents/households/$(householdId)).data.memberIds;
+
+        match /activity/{entryId} {
+          allow read, create: if isSignedIn()
+            && request.auth.uid in get(/databases/$(database)/documents/households/$(householdId)).data.memberIds;
+          // L'historique n'est jamais modifié ni supprimé une fois écrit.
+          allow update, delete: if false;
+        }
+      }
+    }
+  }
+}
