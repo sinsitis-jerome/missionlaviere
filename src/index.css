@@ -1,122 +1,99 @@
-/**
- * Types partagés de l'application. Le vocabulaire (statuts, priorités) est
- * gardé en français car il est utilisé tel quel dans l'historique
- * d'activité généré automatiquement.
- */
+@import '@fontsource-variable/fraunces/standard.css';
+@import '@fontsource-variable/inter';
 
-export type Priority = 'basse' | 'normale' | 'haute' | 'urgente';
+:root {
+  /* Couleurs — inspirées d'un tableau de cuisine (ardoise + craie) plutôt
+     que d'une palette SaaS générique. */
+  --ardoise: #23302b;
+  --ardoise-clair: #2f4038;
+  --papier: #f1f3ec;
+  --papier-carte: #fbfaf5;
+  --encre: #211f1a;
+  --encre-douce: #55564d;
+  --craie: #f3f1e7;
+  --sarcelle: #3e8e77;
+  --sarcelle-clair: #dcece6;
+  --ocre: #c9932a;
+  --ocre-clair: #f6e8c9;
+  --brique: #b8452f;
+  --brique-clair: #f5ddd6;
+  --ligne: rgba(33, 31, 26, 0.14);
+  --ligne-clair: rgba(243, 241, 231, 0.22);
+  --ombre: 0 2px 10px rgba(33, 31, 26, 0.12);
 
-export type Status = 'a_faire' | 'en_cours' | 'termine';
+  --police-affichage: 'Fraunces Variable', 'Iowan Old Style', ui-serif, serif;
+  --police-texte: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
 
-export type RecurrenceFrequency = 'quotidienne' | 'hebdomadaire' | 'mensuelle';
-
-export interface Recurrence {
-  frequence: RecurrenceFrequency;
-  /** Intervalle en unités de la fréquence (ex: tous les 2 jours). */
-  intervalle: number;
-  /** Pour la fréquence hebdomadaire : 0 (dimanche) à 6 (samedi). */
-  joursSemaine?: number[];
+  color-scheme: light;
 }
 
-export interface HouseholdMember {
-  uid: string;
-  displayName: string;
-  photoURL: string | null;
-  /** Couleur d'identification du membre, utilisée sur les avatars et pastilles. */
-  colorTag: string;
-  joinedAt: number;
+* {
+  box-sizing: border-box;
 }
 
-export interface Household {
-  id: string;
-  name: string;
-  ownerId: string;
-  inviteCode: string;
-  memberIds: string[];
-  members: Record<string, HouseholdMember>;
-  categories: string[];
-  createdAt: number;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
-export interface Task {
-  id: string;
-  householdId: string;
-  title: string;
-  description: string;
-  category: string;
-  priority: Priority;
-  status: Status;
-  assigneeId: string | null;
-  createdBy: string;
-  createdAt: number;
-  updatedAt: number;
-  dueDate: number | null;
-  recurrence: Recurrence | null;
-  completedAt: number | null;
-  completedBy: string | null;
+body {
+  background: var(--papier);
+  color: var(--encre);
+  font-family: var(--police-texte);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-export type NewTaskInput = Pick
-  Task,
-  'title' | 'description' | 'category' | 'priority' | 'assigneeId' | 'dueDate' | 'recurrence'
->;
-
-export type ActivityType =
-  | 'creation'
-  | 'commentaire'
-  | 'statut'
-  | 'affectation'
-  | 'priorite'
-  | 'categorie'
-  | 'echeance'
-  | 'recurrence';
-
-export interface ActivityEntry {
-  id: string;
-  taskId: string;
-  type: ActivityType;
-  authorId: string;
-  authorName: string;
-  createdAt: number;
-  /** Texte libre pour un commentaire, message généré pour les autres types. */
-  text: string;
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-export const PRIORITY_ORDER: Priority[] = ['urgente', 'haute', 'normale', 'basse'];
+h1,
+h2,
+h3 {
+  font-family: var(--police-affichage);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+}
 
-export const PRIORITY_LABELS: Record<Priority, string> = {
-  urgente: 'Urgente',
-  haute: 'Haute',
-  normale: 'Normale',
-  basse: 'Basse',
-};
+p {
+  margin: 0;
+}
 
-export const STATUS_LABELS: Record<Status, string> = {
-  a_faire: 'À faire',
-  en_cours: 'En cours',
-  termine: 'Terminée',
-};
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
 
-export const STATUS_ORDER: Status[] = ['a_faire', 'en_cours', 'termine'];
+button {
+  cursor: pointer;
+}
 
-export const DEFAULT_CATEGORIES = [
-  'Ménage',
-  'Courses',
-  'Cuisine',
-  'Administratif',
-  'Bricolage',
-  'Extérieur',
-  'Enfants',
-  'Animaux',
-];
+a {
+  color: inherit;
+}
 
-export const MEMBER_COLORS = [
-  '#C1483A', // brique
-  '#4FA88F', // sarcelle
-  '#E4B94E', // ocre
-  '#6B7FD7', // pervenche
-  '#A2609B', // prune
-  '#5E8B4F', // sauge
-  '#D97B4F', // argile
-  '#4A7FA5', // bleu ardoise
-];
+/* Contour de focus visible et cohérent, quel que soit l'élément. */
+:focus-visible {
+  outline: 2px solid var(--sarcelle);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
