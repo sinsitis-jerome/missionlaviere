@@ -59,7 +59,7 @@ export interface Task {
 export type NewTaskInput = Pick
   Task,
   'title' | 'description' | 'category' | 'priority' | 'assigneeId' | 'dueDate' | 'recurrence'
->;
+;
 
 export type ActivityType =
   | 'creation'
