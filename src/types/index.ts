@@ -56,11 +56,9 @@ export interface Task {
   completedBy: string | null;
 }
 
-export type NewTaskInput = Pick
+export type NewTaskInput = Pick<
   Task,
-  'title' | 'description' | 'category' | 'priority' | 'assigneeId' | 'dueDate' | 'recurrence'
-    >
-;
+  'title' | 'description' | 'category' | 'priority' | 'assigneeId' | 'dueDate' | 'recurrence'>;
 
 export type ActivityType =
   | 'creation'
