@@ -171,6 +171,25 @@ export async function changeTaskPriority(
   });
 }
 
+export async function changeTaskCategory(
+  householdId: string,
+  task: Task,
+  newCategory: string,
+  authorId: string,
+  authorName: string,
+): Promise<void> {
+  const ref = doc(requireDb(), 'households', householdId, 'tasks', task.id);
+  await updateDoc(ref, { category: newCategory, updatedAt: serverTimestamp() });
+  await logActivity(householdId, task.id, {
+    type: 'categorie',
+    authorId,
+    authorName,
+    text: '',
+    from: task.category,
+    to: newCategory,
+  });
+}
+
 export async function changeTaskDueDate(
   householdId: string,
   task: Task,
@@ -212,13 +231,12 @@ export async function changeTaskRecurrence(
 export async function editTaskDetails(
   householdId: string,
   taskId: string,
-  fields: { title: string; description: string; category: string },
+  fields: { title: string; description: string },
 ): Promise<void> {
   const ref = doc(requireDb(), 'households', householdId, 'tasks', taskId);
   await updateDoc(ref, {
     title: fields.title.trim(),
     description: fields.description.trim(),
-    category: fields.category,
     updatedAt: serverTimestamp(),
   });
 }

@@ -7,6 +7,7 @@ import { ActivityFeed } from './ActivityFeed';
 import { CommentBox } from './CommentBox';
 import { subscribeToActivity, addComment } from '../firebase/activity';
 import {
+  changeTaskCategory,
   changeTaskDueDate,
   changeTaskPriority,
   changeTaskRecurrence,
@@ -57,6 +58,11 @@ export function TaskDetailModal({
     await changeTaskPriority(household.id, task, priority, authorId, authorName);
   }
 
+  async function handleCategoryChange(category: string) {
+    if (category === task.category) return;
+    await changeTaskCategory(household.id, task, category, authorId, authorName);
+  }
+
   async function handleAssigneeChange(assigneeId: string) {
     const nextId = assigneeId || null;
     if (nextId === task.assigneeId) return;
@@ -89,11 +95,7 @@ export function TaskDetailModal({
   }
 
   async function handleSaveDetails() {
-    await editTaskDetails(household.id, task.id, {
-      title,
-      description,
-      category: task.category,
-    });
+    await editTaskDetails(household.id, task.id, { title, description });
     setEditingDetails(false);
   }
 
@@ -146,6 +148,20 @@ export function TaskDetailModal({
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <span className="etiquette">Catégorie</span>
+            <select value={task.category} onChange={(e) => handleCategoryChange(e.target.value)}>
+              {!household.categories.includes(task.category) && (
+                <option value={task.category}>{task.category}</option>
+              )}
+              {household.categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

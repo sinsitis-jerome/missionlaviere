@@ -24,6 +24,8 @@ export function buildActivityText({ type, authorName, from, to }: BuildActivityT
         : `${authorName} a retiré l'affectation`;
     case 'priorite':
       return `${authorName} a changé la priorité : ${labelPriority(from)} → ${labelPriority(to)}`;
+    case 'categorie':
+      return `${authorName} a changé la catégorie : ${from ?? '—'} → ${to ?? '—'}`;
     case 'echeance':
       return to ? `${authorName} a fixé l'échéance au ${to}` : `${authorName} a retiré l'échéance`;
     case 'recurrence':
