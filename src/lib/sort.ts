@@ -69,6 +69,22 @@ export function filterTasks(tasks: Task[], filters: TaskFilters): Task[] {
   });
 }
 
+/**
+ * Regroupe les tâches par catégorie (triées par ordre alphabétique de
+ * catégorie), chaque groupe étant lui-même trié par priorité/échéance.
+ */
+export function groupByCategory(tasks: Task[]): { category: string; tasks: Task[] }[] {
+  const map = new Map<string, Task[]>();
+  for (const task of tasks) {
+    const list = map.get(task.category) ?? [];
+    list.push(task);
+    map.set(task.category, list);
+  }
+  return Array.from(map.entries())
+    .map(([category, list]) => ({ category, tasks: sortTasks(list) }))
+    .sort((a, b) => a.category.localeCompare(b.category, 'fr'));
+}
+
 export function groupByStatus(tasks: Task[]): Record<Status, Task[]> {
   return {
     a_faire: tasks.filter((t) => t.status === 'a_faire'),
