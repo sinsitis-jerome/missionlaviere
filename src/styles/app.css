@@ -124,6 +124,14 @@
   font-family: var(--police-affichage);
 }
 
+.connexion__soustitre {
+  font-family: var(--police-affichage);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ocre-clair);
+  margin-top: -0.5rem;
+}
+
 .connexion__texte {
   color: rgba(243, 241, 231, 0.78);
   line-height: 1.6;
@@ -501,6 +509,74 @@
   font-size: 0.88rem;
   font-style: italic;
   padding: 0.5rem 0;
+}
+
+/* ---------- Groupes de catégorie ---------- */
+
+.groupe-categorie {
+  border: 1px solid var(--ligne);
+  border-radius: 8px;
+  background: var(--papier);
+  overflow: hidden;
+}
+
+.groupe-categorie__entete {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.groupe-categorie__entete:hover {
+  background: var(--papier-carte);
+}
+
+.groupe-categorie__chevron {
+  width: 0;
+  height: 0;
+  border-left: 5px solid var(--encre-douce);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.groupe-categorie--ouverte .groupe-categorie__chevron {
+  transform: rotate(90deg);
+}
+
+.groupe-categorie__nom {
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex: 1;
+}
+
+.icone-urgente {
+  color: var(--brique);
+  flex-shrink: 0;
+}
+
+.groupe-categorie__compteur {
+  background: var(--papier-carte);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--encre-douce);
+  flex-shrink: 0;
+}
+
+.groupe-categorie__liste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 0.75rem 0.75rem;
 }
 
 /* ---------- Carte tâche ---------- */
